@@ -27,4 +27,23 @@ class ArticleController extends Controller
 
         return abort(500);
     }
+
+    public function edit($id) {
+        $article = Article::find($id);
+        return view('article.form', [
+            'article' => $article
+        ]);
+    }
+
+    public function update(Request $request, $id) {
+        $inputs = $request->only(['title', 'description']);
+        $article = Article::find($id);
+        $update = $article->update($inputs);
+
+        if($update) {
+            return redirect()->route('article.index');
+        }
+
+        return abort(500);
+    }
 }
